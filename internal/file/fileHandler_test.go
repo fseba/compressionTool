@@ -6,7 +6,7 @@ import (
 	"testing/fstest"
 )
 
-func TestFileReader(t *testing.T) {
+func TestGetCharacterCounts(t *testing.T) {
 	fs := fstest.MapFS{
 		"test1.txt": {Data: []byte("xx")},
 		"test2.txt": {Data: []byte("xxxx")},
