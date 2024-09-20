@@ -1,15 +1,12 @@
 package main
 
 import (
-	"compressionTool/internal/file"
-	utils "compressionTool/pkg"
+	"compressionTool/pkg/file"
+	tb "compressionTool/pkg/treeBuilder"
+	utils "compressionTool/pkg/utils"
 	"fmt"
 	"os"
 )
-
-// TODO: accept file name as input & return error if file is valid
-// TODO: read file
-// TODO: determine frequency of each character
 
 func main() {
 	utils.PrintBanner()
@@ -36,7 +33,11 @@ func main() {
 		return
 	}
 
-	for char, count := range charCounts {
-		fmt.Printf("%c: %d\n", char, count)
-	}
+	node := tb.BuildHuffmanTree(charCounts)
+	codes := tb.GenerateHuffmanCodes(node)
+
+	// for rune, code := range codes {
+	// 	fmt.Printf("%c: %q\n", rune, code)
+	// }
+	fmt.Println(file.WriteHeader(codes))
 }

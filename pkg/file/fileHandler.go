@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
+	"strings"
 	"unicode/utf8"
 )
 
@@ -46,3 +47,30 @@ func GetCharacterCounts(fileSystem fs.FS, path string) (map[rune]int, error) {
 
 	return charCounts, nil
 }
+
+func WriteHeader(content map[rune]string) string {
+	// header format:
+	// <header> k:v k:v </header>
+	var builder strings.Builder
+
+	builder.WriteString("<compressionToolHeader>")
+
+	first := true
+	for k, v := range content {
+		if !first {
+			builder.WriteString("; ")
+		}
+		builder.WriteString(string(k))
+		builder.WriteString(":")
+		builder.WriteString(v)
+		first = false
+	}
+
+	builder.WriteString("</compressionToolHeader>")
+
+	return builder.String()
+}
+
+// Create file named according input
+// Add header slice as first line
+// Add decoded content from original file
